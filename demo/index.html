@@ -210,29 +210,30 @@
                 $('#fm-iframe').remove();
                 $("body").css("overflow-y", "scroll");
             });
+		if(dialogName == 'image'){
+		    var tabCount = dialogDefinition.contents.length;
+		    for (var i = 0; i < tabCount; i++) {
+			var browseButton = dialogDefinition.contents[i].get('browse');
 
-            var tabCount = dialogDefinition.contents.length;
-            for (var i = 0; i < tabCount; i++) {
-                var browseButton = dialogDefinition.contents[i].get('browse');
+			if (browseButton !== null) {
+			    browseButton.hidden = false;
+			    browseButton.onClick = function (dialog, i)
+			    {
+				editor._.filebrowserSe = this;
+				var iframe = $("<iframe id='fm-iframe' class='fm-modal'/>").attr({
+				    src: './../index.html' + // Change it to wherever  Filemanager is stored.
+				    '?CKEditorFuncNum=' + CKEDITOR.instances[event.editor.name]._.filebrowserFn +
+				    '&CKEditorCleanUpFuncNum=' + cleanUpFuncRef +
+				    '&langCode=en' +
+				    '&CKEditor=' + event.editor.name
+				});
 
-                if (browseButton !== null) {
-                    browseButton.hidden = false;
-                    browseButton.onClick = function (dialog, i)
-                    {
-                        editor._.filebrowserSe = this;
-                        var iframe = $("<iframe id='fm-iframe' class='fm-modal'/>").attr({
-                            src: './../index.html' + // Change it to wherever  Filemanager is stored.
-                            '?CKEditorFuncNum=' + CKEDITOR.instances[event.editor.name]._.filebrowserFn +
-                            '&CKEditorCleanUpFuncNum=' + cleanUpFuncRef +
-                            '&langCode=en' +
-                            '&CKEditor=' + event.editor.name
-                        });
-
-                        $("body").append(iframe);
-                        $("body").css("overflow-y", "hidden");  // Get rid of possible scrollbars in containing document
-                    }
-                }
-            }
+				$("body").append(iframe);
+				$("body").css("overflow-y", "hidden");  // Get rid of possible scrollbars in containing document
+			    }
+			}
+		    }
+		}
         });
 	</script>
 </body>
